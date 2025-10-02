@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bart Kay Statements - Interactive Reference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        color: #333;
+        line-height: 1.6;
+        padding: 20px;
+        min-height: 100vh;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        overflow: hidden;
+    }
+    
+    .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .header h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .header p {
+        font-size: 1.1em;
+        opacity: 0.95;
+    }
+    
+    .controls {
+        padding: 25px;
+        background: #f8f9fa;
+        border-bottom: 2px solid #e9ecef;
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    
+    .search-box {
+        flex: 1;
+        min-width: 250px;
+    }
+    
+    .search-box input {
+        width: 100%;
+        padding: 12px 20px;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s;
+    }
+    
+    .search-box input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .filter-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .filter-btn {
+        padding: 10px 20px;
+        border: 2px solid #667eea;
+        background: white;
+        color: #667eea;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+    
+    .filter-btn:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    
+    .filter-btn.active {
+        background: #667eea;
+        color: white;
+    }
+    
+    .content {
+        padding: 30px;
+    }
+    
+    .category {
+        margin-bottom: 40px;
+        animation: fadeIn 0.5s;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .category-title {
+        font-size: 1.8em;
+        color: #667eea;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #667eea;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        user-select: none;
+    }
+    
+    .category-title:hover {
+        color: #764ba2;
+    }
+    
+    .toggle-icon {
+        font-size: 0.7em;
+        transition: transform 0.3s;
+    }
+    
+    .toggle-icon.collapsed {
+        transform: rotate(-90deg);
+    }
+    
+    .quote-block {
+        background: #f8f9fa;
+        border-left: 4px solid #667eea;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+    
+    .quote-block:hover {
+        background: #e9ecef;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transform: translateX(5px);
+    }
+    
+    .quote-text {
+        font-style: italic;
+        color: #495057;
+        font-size: 1.05em;
+        line-height: 1.8;
+    }
+    
+    .subsection {
+        margin-bottom: 30px;
+    }
+    
+    .subsection-title {
+        font-size: 1.3em;
+        color: #495057;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+    
+    .stats {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        background: #e9ecef;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .stat {
+        flex: 1;
+        min-width: 150px;
+        text-align: center;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .stat-number {
+        font-size: 2em;
+        font-weight: bold;
+        color: #667eea;
+    }
+    
+    .stat-label {
+        color: #6c757d;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+    
+    .hidden {
+        display: none;
+    }
+    
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: #6c757d;
+        font-size: 1.2em;
+    }
+    
+    @media (max-width: 768px) {
+        .header h1 {
+            font-size: 1.8em;
+        }
+        
+        .controls {
+            flex-direction: column;
+        }
+        
+        .filter-buttons {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Bart Kay Statements</h1>
+            <p>Interactive Reference Database from Transcript</p>
+        </div>
+
+```
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search quotes...">
+        </div>
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-category="all">All</button>
+            <button class="filter-btn" data-category="diet">Diet</button>
+            <button class="filter-btn" data-category="physiology">Physiology</button>
+            <button class="filter-btn" data-category="lifestyle">Lifestyle</button>
+            <button class="filter-btn" data-category="science">Science</button>
+        </div>
+    </div>
+    
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number" id="totalQuotes">0</div>
+            <div class="stat-label">Total Quotes</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number" id="visibleQuotes">0</div>
+            <div class="stat-label">Visible</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number" id="categoryCount">0</div>
+            <div class="stat-label">Categories</div>
+        </div>
+    </div>
+    
+    <div class="content" id="content"></div>
+</div>
+
+<script>
+    const data = {
+        "Background & Credentials": {
+            category: "science",
+            quotes: [
+                "I've taught physiology, anatomy, biochemistry, metabolism/nutrition, and research design/statistics since 2001 in both the UK and Australasia",
+                "I have publications in the areas of exercise physiology, biochemistry, metabolism, nutrition, statistics, and physiological performance modelling",
+                "I've consulted on optimizing physical performance for The New Zealand All Blacks, the National Rugby League (NRL) Referees Association, The Royal Australian Defence Force, and The Royal New Zealand Army"
+            ]
+        },
+        "Fundamental Positions": {
+            category: "diet",
+            quotes: [
+                "There is no such thing as healthy plant foods that is an ideology that is a propaganda that people have been sold for about a 100 Years by people who have an exx to grind",
+                "The exact requirement for plant food of any kind in your diet is not one single gram ever none at all",
+                "4 and a half million years of both positive and negative selection pressures have led the human body to be molded in such a way as to be absolutely ideally suited for eating the muscle meat and Associated fat of large ruminant animals mostly with very little to no plant material at all"
+            ]
+        },
+        "Diet Hierarchy": {
+            category: "diet",
+            subsections: {
+                "Worst Diet": [
+                    "The worst possible diet for a human being other than no food at all is the standard western or standard American diet the mixed macronutrient diet made up of significant amounts of fats proteins and carbohydrates that diet will kill you quicker than anything else"
+                ],
+                "Vegan Diet": [
+                    "A vegan diet which is being promoted heavily not only by vegans but also by the powers that be Agenda 21 all that kind of stuff that diet is absolutely superior to the standard diet for a period of about 5 years give or take after which it will be disastrous because it's destitute of nutrition",
+                    "84% of people who ever go vegan quit they do that within 5 years and 90% of those people site catastrophic Health failure as the reason for quitting veganism"
+                ],
+                "Optimal Diet": [
+                    "The diet that these so-called scientists and nutrition are telling us will kill us that's the one that's optimal for human beings actually"
+                ]
+            }
+        },
+        "What to Eat": {
+            category: "diet",
+            subsections: {
+                "Primary Foods": [
+                    "80% of everything I eat is the muscle meat of beef not organs the muscle meat and the associated fat plus or minus butter usually plus butter salt water that's pretty much it",
+                    "20% of everything I eat is not beef muscle meat and Associated fat or butter so that's pork fish chicken lamb everything else is a very small percentage of my diet",
+                    "Can a person thrive on nothing but the muscle meat and Associated fat of let's say beef yes without any question"
+                ],
+                "Meal Timing": [
+                    "I eat once a day and it's generally at about 4:00 in the afternoon and then the next time I eat will be 4:00 the next day",
+                    "When you get really used to the carnival lifestyle you're not getting hungry multiple times a day the reason a person generally gets hungry multiple times a day is because of poor blood sugar control"
+                ],
+                "Quantity": [
+                    "Your minimum protein intake per day ought to be 1.75 g of protein per kilogram of of lean body mass"
+                ]
+            }
+        },
+        "What to Avoid": {
+            category: "diet",
+            subsections: {
+                "Top Priority": [
+                    "The top item on the hit list of things to absolutely avoid is any industrial seed oil vegetable oil of any kind if you see it on the supermarket shelf and it's somewhere between clear and straw colored and it's a fluid in a plastic bottle usually can be a glass bottle doesn't matter what sort of bottle it's in by the way if it is liquid at room temperature and an oil you should not consume it in your food neither should you use it for cooking under any circumstances that is the worst thing you can put into your body"
+                ],
+                "Second Priority": [
+                    "The second worst thing you can put into your body is sugar or anything that readily turns into sugar which basically is almost all of the carbohydrates Ergo almost all of the plant materials"
+                ],
+                "Fiber": [
+                    "The exact requirement in dietary terms nutrient terms for dietary insoluble plant fiber there's not one single gram ever ever",
+                    "Fiber is if anything disruptive to anic function uh fiber is actually the cause of most issues that people have in their guts precisely because your gut is not designed to break down fibers",
+                    "I've eaten ostensible no fiber to speak of for about 9 years now so I should be well and truly stopped up and I should be absolutely full of colon cancer by now shouldn't I after 9 years of ignoring this fact that we all need fiber hasn't happened"
+                ],
+                "Seeds, Nuts, Grains": [
+                    "The seed of any plant or the extra ract of seed of any plant seeds are the most toxic parts of a plant",
+                    "As soon as you chew a seed up disrupt its physical function destroy its ability to grow into a plant it releases toxin to tell you don't do that",
+                    "You absolutely want to avoid all seeds all nuts all grains all of those things that can themselves grow into a plant"
+                ]
+            }
+        },
+        "Insulin Resistance": {
+            category: "physiology",
+            quotes: [
+                "Insulin resistance is a normal natural indicated and useful biological process it is not a pathology and it is not the cause of diabetes",
+                "The cause of diabetes elevated blood glucose is pouring things down your stupid neck that readily turn into glucose I.E all carbohydrates you can be as insulin resistant as you like and if you consume no carbohydrate whatsoever you will not have elevated blood glucose Ergo you will not be diagnosed as diabetic",
+                "This insulin resistance is not a pathology at all it is a self-protective mechanism protecting that cell from destruction by glucose"
+            ]
+        },
+        "Vitamin C": {
+            category: "physiology",
+            quotes: [
+                "Your need for Vitamin C is vastly reduced if you're not also eating carbohydrate",
+                "The transporter that means that you can absorb vitamin C from the blood into the cells is a transporter called glute four ever heard of that one I have glucose that's the one that transports glucose",
+                "If you eat meat for vitamin C and carbohydrates that don't contain vitamin C so let's say your diet is meat and bread then you're going to get scurvy yes because the carbohydrate from the bread will out compete the small amount of vitamin C from the meat",
+                "Take the bread out of that situation all together double up on your meat intake now you've got enough vitamin C"
+            ]
+        },
+        "Iron": {
+            category: "physiology",
+            quotes: [
+                "The exact form of iron that is required by the human body to have biological use to be usable by the human body at all is a form of iron which is biocol to a protein called heem",
+                "Heem ion is what you need and why do we need that well its primary role is in the carriage and capacitance for oxygen in your body heon is completely absolutely and utterly non-toxic",
+                "The other way that we can get iron into our bodies is through nonh iron the kind of iron that you'll find in plant foods for example that is toxic highly toxic"
+            ]
+        },
+        "Ketosis": {
+            category: "physiology",
+            quotes: [
+                "I don't think a person should be in ketosis 24/7 I think that's a bad idea in fact that will tend to impact your metabolic rate your thyroid function your kidney function all in a negative way",
+                "A human is designed to drift in and out of ketosis during a 24-hour period"
+            ]
+        },
+        "Organ Meats": {
+            category: "diet",
+            quotes: [
+                "Organ meats are completely and utterly unnecessary in the human diet",
+                "My main bug beer with with organs is liver particularly",
+                "If you're piling in an unnaturally large proportion of liver you are asking for a problem because you are not designed for that",
+                "What about all the toxins in liver that will do you damage a lot of people say oh you're talking about vitamin A aren't you not really I'm not convinced about vitamin A talk toxicity I tell you what I am convinced by though it's copper toxicity and the level of copper that you will find in liver is vast"
+            ]
+        },
+        "Supplements": {
+            category: "diet",
+            quotes: [
+                "There is no nutritional deficiency a person can expect to experience on a diet consisting of nothing other than the muscle Associated fat perhaps a bit of butter some salt not one single deficiency"
+            ]
+        },
+        "Transition Advice": {
+            category: "diet",
+            subsections: {
+                "Critical Rule": [
+                    "If you want to change your diet from anything to anything else do not do that overnight I'm going carnivore tomorrow I'm going vegan tomorrow I'm going omnivore tomorrow whatever no change your diet over 6 to 8 weeks from what it is to what you want it to be you must allow your microbiome to adjust to the change in food supply"
+                ],
+                "After Transition": [
+                    "Volume goes down of number twos so they get skinnier they get smaller there's less of them instead of going once a day sometimes more than once once a day for some people you'll find once every second or third day is quite normal"
+                ]
+            }
+        },
+        "Nutrition Science": {
+            category: "science",
+            quotes: [
+                "If you're looking for the science to underpin any assersion about human nutrition the last place you should look is in the nutrition science area in the peer review literature all of that is a ring fenced area of ideology that's bought and paid for all of it is pseudo science there's nothing worth spending more than a day or so even looking at in there in the entire field",
+                "Money is at play here a lot of money huge amounts of money and there are people who want to push a certain Barrow because at the end of the tax year their profits depend upon that entirely and so they will pay off scientists nutrition scientists they'll pay off physiologists"
+            ]
+        },
+        "Anthropological Evidence": {
+            category: "science",
+            quotes: [
+                "Evolution is a thing it's not a theory it's not a hypothesis it's a thing it occurs we've observed it occurring",
+                "The stabil isotype testing I alluded to earlier slam dunk every single test of every lung bone collagen that's been extracted from all human remains found anywhere on this planet of any any age over about 11,000 years and less than 350,000 they all tell the same story within about 5% human beings are obligate hyper carnivals we ate almost no plants at all"
+            ]
+        },
+        "Randle Cycle": {
+            category: "physiology",
+            quotes: [
+                "The Randall cycle ostensibly boil down to its most simple way of describing it is that of fats and carbohydrates your body will be running on one or the other primarily based on what is being provided chronically",
+                "If you eat a bunch of carbohydrates you are not going to be efficient at using fats if you're running on fats not only are you not efficient in carbohydrates they're locked out completely because they are toxic at that state",
+                "The human body has several tissues that absolutely require glucose to function if you were to remove all the glucose from your circulation from your blood all the glucose that's stored in your muscles all the glucose that's stored in your liver drain your body of glucose you will die within about 4 and a half minutes",
+                "The human body is capable of making all the glucose it needs it's self from non-glucose precursors"
+            ]
+        },
+        "Lifestyle Factors": {
+            category: "lifestyle",
+            subsections: {
+                "1. Diet": [
+                    "Easily the most important thing hugely the most important thing if you're only going to do one thing would do that change your diet slowly"
+                ],
+                "2. Stem Cell Product": [
+                    "The flagship product is a product which is an adult Stem Cell release agent",
+                    "It causes your bone marrow to release your adult stem cells and those adult stem cells then go around your circulation find tissues in your body that are in need of renewal repair of any kind and they do exactly that",
+                    "The product is the the flagship product is called stem enhance Ultra it has a green label"
+                ],
+                "3. Grounding": [
+                    "It's grounding yourself electrically making a connection between you and Earth an electrical connection allowing you to absorb electrons from the surface of the Earth into your body",
+                    "When you ground yourself to the Earth immediately the effective viscosity the thickness if you like or tackiness of your blood reduces by a factor of three immediately",
+                    "I ground myself about 20 hours a day"
+                ],
+                "4. Blue Light Blocking": [
+                    "You need to block blue wavelengths of light from entering your eyes anytime that the sun is not in the sky",
+                    "Blue light blocking spectacles that are clear and do not distort the color well when you block blue what happens is everything turns Amber the lens itself has to be dark Amber to block blue"
+                ],
+                "5. Exercise": [
+                    "HIIT and resistance training at the top end of your individual intensity Spectrum 45 minutes for the total session which is probably a work to rest ratio of 5 to1 no more than about four times a week and never on consecutive days",
+                    "Never ever do cardio for any significant period of time at moderate intensity the stuff they tell you is great for you and is good for you and the cardiovascular fitness all all the stuff basically no absolutely under no circumstances should you do that level of exercise"
+                ]
+            }
+        },
+        "Personal Results": {
+            category: "lifestyle",
+            quotes: [
+                "When I did 30 days 100% carnivore my health improved probably half again from what my Baseline is which is pretty good so what I'm saying is that 5 to 10% extra in 30 days netted me as much health on top again",
+                "When I did 90 days 100% carnivore it was more like a doubling of my health status in 90 days",
+                "Why didn't you just keep doing that then why did you go back to 95% well because I'm a human being I'm a heist I lack self-discipline and 90 to 95% is a level that I can maintain and be happy with without distress"
+            ]
+        },
+        "Key Principles": {
+            category: "lifestyle",
+            quotes: [
+                "You need to understand the reason that you eat food is so that you might live it is not the other way around",
+                "A bit of discipline is all it takes until your body gets used to that then it's quite happy with that you go off piece and it goes don't do that",
+                "The longer you're actually on a clean 100% Carnival diet the more violent your body reacts when you do go off pasted so it becomes just not even worth it"
+            ]
+        }
+    };
+
+    function renderContent(filterCategory = 'all', searchTerm = '') {
+        const content = document.getElementById('content');
+        content.innerHTML = '';
+        let visibleCount = 0;
+        
+        Object.keys(data).forEach(categoryTitle => {
+            const categoryData = data[categoryTitle];
+            const categoryMatch = filterCategory === 'all' || categoryData.category === filterCategory;
+            
+            if (!categoryMatch) return;
+            
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'category';
+            
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'category-title';
+            titleDiv.innerHTML = `<span class="toggle-icon">▼</span>${categoryTitle}`;
+            categoryDiv.appendChild(titleDiv);
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'category-content';
+            
+            let hasVisibleQuotes = false;
+            
+            if (categoryData.quotes) {
+                categoryData.quotes.forEach(quote => {
+                    if (searchTerm && !quote.toLowerCase().includes(searchTerm.toLowerCase())) return;
+                    
+                    const quoteDiv = document.createElement('div');
+                    quoteDiv.className = 'quote-block';
+                    quoteDiv.innerHTML = `<div class="quote-text">"${highlightText(quote, searchTerm)}"</div>`;
+                    contentDiv.appendChild(quoteDiv);
+                    hasVisibleQuotes = true;
+                    visibleCount++;
+                });
+            }
+            
+            if (categoryData.subsections) {
+                Object.keys(categoryData.subsections).forEach(subsectionTitle => {
+                    const subsectionDiv = document.createElement('div');
+                    subsectionDiv.className = 'subsection';
+                    
+                    const subsectionTitleDiv = document.createElement('div');
+                    subsectionTitleDiv.className = 'subsection-title';
+                    subsectionTitleDiv.textContent = subsectionTitle;
+                    
+                    let hasVisibleSubsectionQuotes = false;
+                    
+                    categoryData.subsections[subsectionTitle].forEach(quote => {
+                        if (searchTerm && !quote.toLowerCase().includes(searchTerm.toLowerCase())) return;
+                        
+                        if (!hasVisibleSubsectionQuotes) {
+                            subsectionDiv.appendChild(subsectionTitleDiv);
+                            hasVisibleSubsectionQuotes = true;
+                            hasVisibleQuotes = true;
+                        }
+                        
+                        const quoteDiv = document.createElement('div');
+                        quoteDiv.className = 'quote-block';
+                        quoteDiv.innerHTML = `<div class="quote-text">"${highlightText(quote, searchTerm)}"</div>`;
+                        subsectionDiv.appendChild(quoteDiv);
+                        visibleCount++;
+                    });
+                    
+                    if (hasVisibleSubsectionQuotes) {
+                        contentDiv.appendChild(subsectionDiv);
+                    }
+                });
+            }
+            
+            if (hasVisibleQuotes) {
+                categoryDiv.appendChild(contentDiv);
+                content.appendChild(categoryDiv);
+                
+                titleDiv.addEventListener('click', () => {
+                    contentDiv.classList.toggle('hidden');
+                    titleDiv.querySelector('.toggle-icon').classList.toggle('collapsed');
+                });
+            }
+        });
+        
+        if (visibleCount === 0) {
+            content.innerHTML = '<div class="no-results">No results found</div>';
+        }
+        
+        document.getElementById('visibleQuotes').textContent = visibleCount;
+    }
+    
+    function highlightText(text, searchTerm) {
+        if (!searchTerm) return text;
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        return text.replace(regex, '<mark style="background: #ffc107; padding: 2px 4px; border-radius: 3px;">$1</mark>');
+    }
+    
+    function updateStats() {
+        let totalQuotes = 0;
+        let categoryCount = Object.keys(data).length;
+        
+        Object.values(data).forEach(categoryData => {
+            if (categoryData.quotes) totalQuotes += categoryData.quotes.length;
+            if (categoryData.subsections) {
+                Object.values(categoryData.subsections).forEach(quotes => {
+                    totalQuotes += quotes.length;
+                });
+            }
+        });
+        
+        document.getElementById('totalQuotes').textContent = totalQuotes;
+        document.getElementById('categoryCount').textContent = categoryCount;
+    }
+    
+    // Event Listeners
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        const searchTerm = e.target.value;
+        const activeFilter = document.querySelector('.filter-btn.active').dataset.category;
+        renderContent(activeFilter, searchTerm);
+    });
+    
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const searchTerm = document.getElementById('searchInput').value;
+            renderContent(btn.dataset.category, searchTerm);
+        });
+    });
+    
+    // Initialize
+    updateStats();
+    renderContent();
+</script>
+```
+
+</body>
+</html>
